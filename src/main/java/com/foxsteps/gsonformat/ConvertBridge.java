@@ -289,6 +289,10 @@ public class ConvertBridge {
      * @return
      */
     public String removeComment(String str) {
+        if (TextUtils.isEmpty(str)) {
+            return ""; 
+        }
+
         String temp = str.replaceAll("/\\*" +
                 "[\\S\\s]*?" +
                 "\\*/", "");
