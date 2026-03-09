@@ -113,7 +113,7 @@
                   </grid>
                 </constraints>
               </hspacer>
-              <component id="1210c" class="javax.swing.JLabel">
+              <component id="1210c" class="javax.swing.JLabel" binding="entityLabel">
                 <constraints>
                   <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -121,7 +121,7 @@
                   <text value="Entity"/>
                 </properties>
               </component>
-              <component id="e7c1f" class="javax.swing.JLabel">
+              <component id="e7c1f" class="javax.swing.JLabel" binding="fieldLabel">
                 <constraints>
                   <grid row="13" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -129,7 +129,7 @@
                   <text value="Field"/>
                 </properties>
               </component>
-              <component id="e1138" class="javax.swing.JLabel">
+              <component id="e1138" class="javax.swing.JLabel" binding="convertMethodLabel">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -229,7 +229,7 @@
                 </constraints>
                 <properties/>
               </component>
-              <component id="ba954" class="javax.swing.JLabel">
+              <component id="ba954" class="javax.swing.JLabel" binding="annotationLabel">
                 <constraints>
                   <grid row="22" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -237,7 +237,7 @@
                   <text value="annotation: "/>
                 </properties>
               </component>
-              <component id="59564" class="javax.swing.JLabel">
+              <component id="59564" class="javax.swing.JLabel" binding="convertLibraryLabel">
                 <constraints>
                   <grid row="20" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -267,7 +267,7 @@
                   <text value="name prefix :"/>
                 </properties>
               </component>
-              <component id="fa434" class="javax.swing.JLabel">
+              <component id="fa434" class="javax.swing.JLabel" binding="nameSuffixLabel">
                 <constraints>
                   <grid row="11" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -366,7 +366,7 @@
                   <text value="filed (private)"/>
                 </properties>
               </component>
-              <component id="7e8b5" class="javax.swing.JLabel">
+              <component id="7e8b5" class="javax.swing.JLabel" binding="generalLabel">
                 <constraints>
                   <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -386,7 +386,7 @@
                   <text value="virgo mode"/>
                 </properties>
               </component>
-              <component id="b7124" class="javax.swing.JLabel">
+              <component id="b7124" class="javax.swing.JLabel" binding="useLabel">
                 <constraints>
                   <grid row="16" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>

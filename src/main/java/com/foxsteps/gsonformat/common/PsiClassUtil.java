@@ -161,8 +161,8 @@ public class PsiClassUtil {
     }
 
     public static boolean isClassAvailableForProject(Project project, String className) {
-        PsiClass classInModule = JavaPsiFacade.getInstance(project).findClass(className,
-                new EverythingGlobalScope(project));
+        
+        PsiClass classInModule = JavaPsiFacade.getInstance(project).findClass(className, GlobalSearchScope.everythingScope(project));
         return classInModule != null;
     }
 

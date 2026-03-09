@@ -141,7 +141,7 @@ public abstract class Processor {
                     fieldName = temp;
                 }
             }
-            if (typeStr.equals("boolean")) {
+            if ("boolean".equals(typeStr)) {
                 String method = "public ".concat(typeStr).concat("   is").concat(
                         captureName(fieldName)).concat("() {   return ").concat(
                         field.getGenerateFieldName()).concat(" ;} ");

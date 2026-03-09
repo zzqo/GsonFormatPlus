@@ -1,5 +1,6 @@
 package com.foxsteps.gsonformat.ui;
 
+import com.foxsteps.gsonformat.i18n.GsonFormatPlusBundle;
 import com.foxsteps.gsonformat.tools.checktreetable.FiledTreeTableModel;
 import com.foxsteps.gsonformat.ConvertBridge;
 import com.foxsteps.gsonformat.action.DataWriter;
@@ -50,6 +51,7 @@ public class FieldsDialog extends JFrame {
     public FieldsDialog(ConvertBridge.Operator operator, ClassEntity classEntity,
                         PsiElementFactory factory, PsiClass psiClass, PsiClass aClass, PsiFile file, Project project
             , String generateClassStr) {
+        initLocalization();
         this.operator = operator;
         this.factory = factory;
         this.aClass = aClass;
@@ -58,10 +60,15 @@ public class FieldsDialog extends JFrame {
         this.psiClass = psiClass;
         this.generateClassStr = generateClassStr;
         setContentPane(contentPane);
-        setTitle("Virgo Model");
+        setTitle(GsonFormatPlusBundle.message("fields.dialog.title"));
         getRootPane().setDefaultButton(buttonOK);
         this.setAlwaysOnTop(true);
         initListener(classEntity, generateClassStr);
+    }
+    
+    private void initLocalization() {
+        buttonOK.setText(GsonFormatPlusBundle.message("common.ok"));
+        buttonCancel.setText(GsonFormatPlusBundle.message("common.cancel"));
     }
 
     private void initListener(ClassEntity classEntity, String generateClassStr) {

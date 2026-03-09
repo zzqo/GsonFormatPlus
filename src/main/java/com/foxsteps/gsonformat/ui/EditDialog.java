@@ -2,6 +2,7 @@ package com.foxsteps.gsonformat.ui;
 
 import com.foxsteps.gsonformat.config.Config;
 import com.foxsteps.gsonformat.config.Constant;
+import com.foxsteps.gsonformat.i18n.GsonFormatPlusBundle;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -19,6 +20,7 @@ public class EditDialog extends JFrame {
     private Type type;
 
     public EditDialog(Type type) {
+        initLocalization();
         this.type = type;
         setContentPane(contentPane);
 //        setModal(true);
@@ -81,6 +83,12 @@ public class EditDialog extends JFrame {
 
     }
 
+    private void initLocalization() {
+        okButton.setText(GsonFormatPlusBundle.message("common.ok"));
+        cancelButton.setText(GsonFormatPlusBundle.message("common.cancel"));
+        resetButton.setText(GsonFormatPlusBundle.message("common.reset"));
+    }
+    
     private void resetAction() {
 
         switch (type) {

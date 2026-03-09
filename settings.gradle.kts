@@ -15,4 +15,8 @@ include 'shared'
 include 'api'
 include 'services:webservice'
 */
-rootProject.name = 'GsonFormatPlus'
+rootProject.name = "GsonFormatPlus"
+
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+}

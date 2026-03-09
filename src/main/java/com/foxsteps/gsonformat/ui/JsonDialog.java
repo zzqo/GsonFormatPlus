@@ -6,6 +6,7 @@ import com.foxsteps.gsonformat.common.StringUtils;
 import com.foxsteps.gsonformat.common.SystemUtils;
 import com.foxsteps.gsonformat.config.Config;
 import com.foxsteps.gsonformat.common.PsiClassUtil;
+import com.foxsteps.gsonformat.i18n.GsonFormatPlusBundle;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
@@ -39,6 +40,8 @@ public class JsonDialog extends JFrame implements ConvertBridge.Operator {
     private JTextArea commentAR;
     private JButton copyJsonButton;
     private JButton copyCommentButton;
+    private JLabel jsonLabel;
+    private JLabel commentLabel;
 
     private PsiClass cls;
     private PsiFile file;
@@ -47,18 +50,30 @@ public class JsonDialog extends JFrame implements ConvertBridge.Operator {
     private String currentClass = null;
 
     public JsonDialog(PsiClass cls, PsiFile file, Project project) throws HeadlessException {
+        initLocalization();
         this.cls = cls;
         this.file = file;
         this.project = project;
         //设置内容面板
         setContentPane(contentPane2);
-        setTitle("GsonFormatPlus");
+        setTitle(GsonFormatPlusBundle.message("plugin.name"));
         getRootPane().setDefaultButton(okButton);
         this.setAlwaysOnTop(true);
         //初始化面板
         initGeneratePanel(file);
         //初始化监听器
         initListener();
+    }
+    
+    private void initLocalization() {
+        formatBtn.setText(GsonFormatPlusBundle.message("json.dialog.format"));
+        jsonLabel.setText(GsonFormatPlusBundle.message("json.dialog.json"));
+        commentLabel.setText(GsonFormatPlusBundle.message("json.dialog.comment"));
+        cancelButton.setText(GsonFormatPlusBundle.message("common.cancel"));
+        settingButton.setText(GsonFormatPlusBundle.message("json.dialog.setting"));
+        okButton.setText(GsonFormatPlusBundle.message("common.ok"));
+        copyJsonButton.setText(GsonFormatPlusBundle.message("json.dialog.copy.json"));
+        copyCommentButton.setText(GsonFormatPlusBundle.message("json.dialog.copy.comment"));
     }
 
     private void initGeneratePanel(PsiFile file) {
@@ -94,7 +109,7 @@ public class JsonDialog extends JFrame implements ConvertBridge.Operator {
                 cardLayout.next(generateClassP);
                 if (generateClassLB.getText().equals(currentClass)
                         && !TextUtils.isEmpty(Config.getInstant().getEntityPackName())
-                        && !Config.getInstant().getEntityPackName().equals("null")) {
+                        && !"null".equals(Config.getInstant().getEntityPackName())) {
                     generateClassLB.setText(Config.getInstant().getEntityPackName());
                     generateClassTF.setText(Config.getInstant().getEntityPackName());
                 }
@@ -247,7 +262,7 @@ public class JsonDialog extends JFrame implements ConvertBridge.Operator {
                     return;
                 }
                 SystemUtils.copyToClipboard(jsonComment);
-                NotificationCenter.sendNotificationForProject("Copy jsonComment success",NotificationType.INFORMATION,project);
+                NotificationCenter.sendNotificationForProject(GsonFormatPlusBundle.message("json.dialog.copy.comment.success"),NotificationType.INFORMATION,project);
             }
         });
 
@@ -264,7 +279,7 @@ public class JsonDialog extends JFrame implements ConvertBridge.Operator {
         //生成类名
         String generateClassName = generateClassTF.getText().replaceAll(" ", "").replaceAll(".java$", "");
         if (TextUtils.isEmpty(generateClassName) || generateClassName.endsWith(".")) {
-            Toast.make(project, generateClassP, MessageType.ERROR, "the path is not allowed");
+            Toast.make(project, generateClassP, MessageType.ERROR, GsonFormatPlusBundle.message("json.dialog.path.not.allowed"));
             return;
         }
         PsiClass generateClass = null;
@@ -328,19 +343,19 @@ public class JsonDialog extends JFrame implements ConvertBridge.Operator {
     public void showError(ConvertBridge.Error err) {
         switch (err) {
             case DATA_ERROR:
-                errorLB.setText("data err !!");
+                errorLB.setText(GsonFormatPlusBundle.message("json.dialog.data.error"));
                 if (Config.getInstant().isToastError()) {
-                    Toast.make(project, errorLB, MessageType.ERROR, "click to see details");
+                    Toast.make(project, errorLB, MessageType.ERROR, GsonFormatPlusBundle.message("json.dialog.error.data"));
                 }
                 break;
             case PARSE_ERROR:
-                errorLB.setText("parse err !!");
+                errorLB.setText(GsonFormatPlusBundle.message("json.dialog.parse.error"));
                 if (Config.getInstant().isToastError()) {
-                    Toast.make(project, errorLB, MessageType.ERROR, "click to see details");
+                    Toast.make(project, errorLB, MessageType.ERROR, GsonFormatPlusBundle.message("json.dialog.error.data"));
                 }
                 break;
             case PATH_ERROR:
-                Toast.make(project, generateClassP, MessageType.ERROR, "the path is not allowed");
+                Toast.make(project, generateClassP, MessageType.ERROR, GsonFormatPlusBundle.message("json.dialog.path.not.allowed"));
                 break;
             default:
                 break;

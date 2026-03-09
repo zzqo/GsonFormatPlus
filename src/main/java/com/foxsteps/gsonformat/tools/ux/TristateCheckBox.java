@@ -49,7 +49,8 @@ public class TristateCheckBox extends JCheckBox {
         });
         // Reset the keyboard action map
         ActionMap map = new ActionMapUIResource();
-        map.put("pressed", new AbstractAction() {      //NOI18N
+        // NOI18N
+        map.put("pressed", new AbstractAction() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -57,7 +58,8 @@ public class TristateCheckBox extends JCheckBox {
                 decorator.nextState();
             }
         });
-        map.put("released", null);                     //NOI18N
+        // NOI18N
+        map.put("released", null);
         SwingUtilities.replaceUIActionMap(this, map);
         // set the model to the adapted model
         decorator = new TristateDecorator(getModel());
@@ -115,14 +117,14 @@ public class TristateCheckBox extends JCheckBox {
         }
 
         private void setState(Boolean state) {
-            if (state == Boolean.FALSE) {
+            if (Boolean.FALSE.equals(state)) {
                 other.setArmed(false);
                 if (selector != null) {
                     selector.setSelect(false);
                 }
                 setPressed(false);
                 setSelected(false);
-            } else if (state == Boolean.TRUE) {
+            } else if (Boolean.TRUE.equals(state)) {
                 other.setArmed(false);
                 setPressed(false);
                 setSelected(true);
@@ -167,9 +169,9 @@ public class TristateCheckBox extends JCheckBox {
          */
         private void nextState() {
             Boolean current = getState();
-            if (current == Boolean.FALSE) {
+            if (current.equals(Boolean.FALSE)) {
                 setState(Boolean.TRUE);
-            } else if (current == Boolean.TRUE) {
+            } else if (current.equals(Boolean.TRUE)) {
                 setState(null);
             } else if (current == null) {
                 setState(Boolean.FALSE);
@@ -179,6 +181,7 @@ public class TristateCheckBox extends JCheckBox {
         /**
          * Filter: No one may change the armed status except us.
          */
+        @Override
         public void setArmed(boolean b) {
         }
 
@@ -190,6 +193,7 @@ public class TristateCheckBox extends JCheckBox {
          * We disable focusing on the component when it is not
          * enabled.
          */
+        @Override
         public void setEnabled(boolean b) {
 //            setFocusable(b);
             other.setEnabled(b);
@@ -199,82 +203,102 @@ public class TristateCheckBox extends JCheckBox {
          * All these methods simply delegate to the "other" model
          * that is being decorated.
          */
+        @Override
         public boolean isArmed() {
             return other.isArmed();
         }
 
+        @Override
         public boolean isSelected() {
             return other.isSelected();
         }
 
+        @Override
         public boolean isEnabled() {
             return other.isEnabled();
         }
 
+        @Override
         public boolean isPressed() {
             return other.isPressed();
         }
 
+        @Override
         public boolean isRollover() {
             return other.isRollover();
         }
 
+        @Override
         public void setSelected(boolean b) {
             other.setSelected(b);
         }
 
+        @Override
         public void setPressed(boolean b) {
             other.setPressed(b);
         }
 
+        @Override
         public void setRollover(boolean b) {
             other.setRollover(b);
         }
 
+        @Override
         public void setMnemonic(int key) {
             other.setMnemonic(key);
         }
 
+        @Override
         public int getMnemonic() {
             return other.getMnemonic();
         }
 
+        @Override
         public void setActionCommand(String s) {
             other.setActionCommand(s);
         }
 
+        @Override
         public String getActionCommand() {
             return other.getActionCommand();
         }
 
+        @Override
         public void setGroup(ButtonGroup group) {
             other.setGroup(group);
         }
 
+        @Override
         public void addActionListener(ActionListener l) {
             other.addActionListener(l);
         }
 
+        @Override
         public void removeActionListener(ActionListener l) {
             other.removeActionListener(l);
         }
 
+        @Override
         public void addItemListener(ItemListener l) {
             other.addItemListener(l);
         }
 
+        @Override
         public void removeItemListener(ItemListener l) {
             other.removeItemListener(l);
         }
 
+        @Override
         public void addChangeListener(ChangeListener l) {
             other.addChangeListener(l);
         }
 
+        @Override
         public void removeChangeListener(ChangeListener l) {
             other.removeChangeListener(l);
         }
 
+        @Override
         public Object[] getSelectedObjects() {
             return other.getSelectedObjects();
         }

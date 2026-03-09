@@ -1,104 +1,63 @@
-GsonFormatPlus
+# GsonFormatPlus
 
-这是一个根据JSONObject格式的字符串,自动生成实体类参数.**本插件只适用 Intellij IDEA 和 Android Studio 工具**，
-基于 GsonFormat 二次定制化开发的idea json生成 Bean插件，
-which is more flexible and convenient.
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-blue)](https://github.com/mars-men/GsonFormatPlus)
+[![JetBrains Plugin](https://img.shields.io/jetbrains/plugin/v/14949-gsonformatplus)](https://plugins.jetbrains.com/plugin/14949-gsonformatplus)
 
-#### 待实现特性
-- 支持实现特定接口类，继承父类功能
-- 支持自定义属性类型，如java.math.BigDecimal
-- 支持实体类序列化，mock生成对象
-- 更多特性希望大家提交issues反馈
+<!-- Plugin description -->
+GsonFormatPlus This is a plugin you can generate Json model from Json String.
+**This Plugin is only for IntelliJ IDEA And Android Studio**.
+which is base on GsonFormat and more flexible and convenient. Welcome to issue and PR.
 
-[English Readme](README_EN.md)
+## Install
 
-#### 1.安装方法
-- 运行编译生成 GsonFormatPlus.zip 或者 直接在Idea的 Plugins -&gt; Marketplace 搜索安装
-- IntelliJ IDEA File-&gt; Settings.. -&gt; Plugins -&gt; install plugin from disk..导入下载的 GsonFormatPlus.zip
-- 重启 IntelliJ IDEA .
+### Using IDE built-in plugin system on Windows:
+`File` > `Settings` > `Plugins` > `Browse repositories...` > `Search for "GsonFormatPlus"` > `Install Plugin`
 
-#### 2.打开方法
+### Using IDE built-in plugin system on MacOs:
+`Preferences` > `Settings` > `Plugins` > `Browse repositories...` > `Search for "GsonFormatPlus"` > `Install Plugin`
 
-1.使用Generate的快捷键.  
-快捷键:图中选中的部分
+### Manually:
+- Download the [latest release](https://github.com/mars-men/GsonFormatPlus/releases) and install it manually using `Preferences` > `Plugins` > `Install plugin from disk...`
+- From official jetbrains store from [download](https://plugins.jetbrains.com/plugin/14949-gsonformatplus/)
 
-![gsonformatinsertpng](https://raw.githubusercontent.com/sun-men/Figurebed/master/2020/03/12-11-12-47-gsonformat-insert.png)
+Restart IDE.
 
-2.使用 GsonFommat 的快捷键.  
-默认 option + s (mac), alt + s (win)  
-通过以下方式修改快捷键:
+## Usage
 
-![gsonformatkeymappng](https://raw.githubusercontent.com/sun-men/Figurebed/master/2020/03/12-11-13-43-gsonformat-keymap.png)
+### 1. Use IDE menu
+![Generate](https://raw.githubusercontent.com/sun-men/Figurebed/master/2020/03/12-11-12-47-gsonformat-insert.png)
 
-#### 3.使用截图
+### 2. Use hotkey
+Default **Option + s**(Mac), **Alt + s** (win)
 
-生成DTO
+You can change the hotkey via: 
+![Modify Shortcut](https://raw.githubusercontent.com/sun-men/Figurebed/master/2020/03/12-11-13-43-gsonformat-keymap.png)
 
-![gsonformatgeneratorgif](https://raw.githubusercontent.com/sun-men/Figurebed/master/2020/03/12-11-18-54-gsonformat-generator.gif)
+### 3. Use Demo
+![Demo GIF](https://raw.githubusercontent.com/sun-men/Figurebed/master/2020/03/12-11-18-54-gsonformat-generator.gif)
 
-生成注释
+### 4. Setting
+![Settings](https://raw.githubusercontent.com/sun-men/Figurebed/master/2020/03/12-11-18-09-gsonformat-setting.png)
 
-![screen](https://user-images.githubusercontent.com/1943377/101614565-1471f100-3a48-11eb-891b-e7da00766423.gif)
+## Configuration Options
 
-#### 4.设置说明
+| Module | Value | Default | Description |
+|--------|-------|---------|-------------|
+| Convert Method | object/arrayFromData | false | Gson convert method |
+| Generate | virgo mode | true | virgo mode |
+| Generate | generate comments | false | generate comments |
+| Generate | split generate | false | split generate sub class |
+| Bean | reuse bean | false | TODO |
+| Field | name suffix | true | class suffix |
+| Field | field(private/public) | true | access level |
+| Field | name prefix | true | field name prefix |
+| Field | use serialized name | true | use serialized name |
+| Field | use wrapper class | true | use wrapper class，eq: int convert Integer |
+| Field | use lombok | true | use lombok replace Getter/Setter |
+| Field | use number key as map | true | use number key as map，TODO |
+| Convert library | jackson/fastjson | true | jackson/fastjson convert library |
 
-![gsonformatsettingpng](https://raw.githubusercontent.com/sun-men/Figurebed/master/2020/03/12-11-18-09-gsonformat-setting.png)
+## Version History
 
-字段说明
-
-| 模块  | 设置  | 是否默认 | 说明  |
-| --- | --- | --- | --- |
-| Convert Method | object/arrayFromData | 否   | Gson自定义生成对象 |
-| Generate | virgo mode | 是   | virgo模式，生成代码之前可自定义调整字段 |
-| Generate | generate comments | 否   | 是否生成注释 |
-| Generate | split generate | 否   | 是否单独生成子类 |
-| Bean | reuse bean | 否   | TODO |
-| Field | name suffix | 是   | 生成类名后缀 |
-| Field | field(private/public) | 是   | 字段私有/公开 |
-| Field | name prefix | 是   | 生成字段名前缀 |
-| Field | use serialized name | 是   | 使用序列化名，类字段为驼峰与添加json注解声明 |
-| Field | use wrapper class | 是   | 使用包装类，int 转 Integer |
-| Field | use lombok | 是   | 使用Lombok替代Getter和Setter |
-| Field | use number key as map | 是   | 使用数字类型key替换为Map结构，待完善 |
-| Convert library | jackson/fastjson | 是   | jackson/fastjson等转换注解 |
-
-#### 5.版本信息
-
-future features
-
-- 提取静态内部类到根类
-- 支持数字key映射Map字段
-
-版本1.5.2 by wangzejun
-
-- 支持字段注释
-- 支持json5格式
-
-版本1.5.1 by sun-men
-
-- 设置默认为jackson注解
-- 支持选用lombok注解
-- 代码在新版本idea重构
-
-版本1.5.0 - 3 years ago
-
-- fix several bug
-- fix unlock setting window size
-
-版本1.4.0
-
-- New: Support for autovalue
-- New: Support for lombok
-- New: Support for split generate class
-
-版本1.2.2
-
-- 支持 field 类型的修改.
-- 支持快捷键打开 GsonFormat ,默认为 option+s(mac), alt+s(win)
-- 支持 field 名称的修改.
-- 支持添加 field 前缀.
-- 支持多种转换库 (Gson,Jackjson,FastJson,LoganSquare).
-- 支持 private 和 public 两种模式.
-- 支持过滤父类已有属性.
-
-the end
+See [CHANGELOG.md](CHANGELOG.md) for detailed version history.
+<!-- Plugin description end -->

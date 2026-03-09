@@ -2,6 +2,7 @@ package com.foxsteps.gsonformat.ui;
 
 import com.foxsteps.gsonformat.config.Config;
 import com.foxsteps.gsonformat.config.Constant;
+import com.foxsteps.gsonformat.i18n.GsonFormatPlusBundle;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.codeStyle.JavaCodeStyleManager;
 import com.intellij.psi.codeStyle.VariableKind;
@@ -52,17 +53,26 @@ public class SettingDialog extends JFrame {
     private JRadioButton loganSquareRB;
     private JRadioButton autoValueRB;
     private JRadioButton lombokRB;
+    private JLabel convertMethodLabel;
+    private JLabel generalLabel;
+    private JLabel entityLabel;
+    private JLabel nameSuffixLabel;
+    private JLabel fieldLabel;
+    private JLabel useLabel;
+    private JLabel convertLibraryLabel;
+    private JLabel annotationLabel;
 
 
     //注解字符串
     private String annotaionStr;
 
     public SettingDialog(Project project) {
+        initLocalization();
         setContentPane(contentPane);
 //        setModal(true);
         getRootPane().setDefaultButton(okButton);
         this.setAlwaysOnTop(true);
-        setTitle("Setting");
+        setTitle(GsonFormatPlusBundle.message("setting.dialog.title"));
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -364,6 +374,44 @@ public class SettingDialog extends JFrame {
         });
     }
 
+    private void initLocalization(){
+        convertMethodLabel.setText(GsonFormatPlusBundle.message("setting.dialog.convert.method"));
+        objectFromDataCB.setText(GsonFormatPlusBundle.message("setting.dialog.object.from.data"));
+        objectFromData1CB.setText(GsonFormatPlusBundle.message("setting.dialog.object.from.data1"));
+        arrayFromDataCB.setText(GsonFormatPlusBundle.message("setting.dialog.array.from.data"));
+        arrayFromData1CB.setText(GsonFormatPlusBundle.message("setting.dialog.array.from.data1"));
+        objectButton.setText(GsonFormatPlusBundle.message("setting.dialog.edit"));
+        object1Button.setText(GsonFormatPlusBundle.message("setting.dialog.edit"));
+        arrayButton.setText(GsonFormatPlusBundle.message("setting.dialog.edit"));
+        array1Button.setText(GsonFormatPlusBundle.message("setting.dialog.edit"));
+        generalLabel.setText(GsonFormatPlusBundle.message("setting.dialog.general"));
+        virgoModelCB.setText(GsonFormatPlusBundle.message("setting.dialog.virgo.mode"));
+        splitGenerateCB.setText(GsonFormatPlusBundle.message("setting.dialog.split.generate"));
+        entityLabel.setText(GsonFormatPlusBundle.message("setting.dialog.entity"));
+        reuseEntityCB.setText(GsonFormatPlusBundle.message("setting.dialog.reuse.bean"));
+        nameSuffixLabel.setText(GsonFormatPlusBundle.message("setting.dialog.name.prefix"));
+        fieldLabel.setText(GsonFormatPlusBundle.message("setting.dialog.field"));
+        filedPrefixCB.setText(GsonFormatPlusBundle.message("setting.dialog.name.prefix"));
+        fieldPrivateRadioButton.setText(GsonFormatPlusBundle.message("setting.dialog.field.private"));
+        fieldPublicRadioButton.setText(GsonFormatPlusBundle.message("setting.dialog.field.public"));
+        useLabel.setText(GsonFormatPlusBundle.message("setting.dialog.use"));
+        useSerializedNameCB.setText(GsonFormatPlusBundle.message("setting.dialog.use.serialized.name"));
+        useWrapperClassCB.setText(GsonFormatPlusBundle.message("setting.dialog.use.wrapper.class"));
+        useCommentCB.setText(GsonFormatPlusBundle.message("setting.dialog.use.comment"));
+        useLombokCB.setText(GsonFormatPlusBundle.message("setting.dialog.use.lombok"));
+        useNumberKeyAsMapCB.setText(GsonFormatPlusBundle.message("setting.dialog.use.number.key.map"));
+        convertLibraryLabel.setText(GsonFormatPlusBundle.message("setting.dialog.convert.library"));
+        jacksonRB.setText(GsonFormatPlusBundle.message("setting.dialog.jackson"));
+        fastJsonRB.setText(GsonFormatPlusBundle.message("setting.dialog.fastjson"));
+        gsonRB.setText(GsonFormatPlusBundle.message("setting.dialog.gson"));
+        loganSquareRB.setText(GsonFormatPlusBundle.message("setting.dialog.logansquare"));
+        autoValueRB.setText(GsonFormatPlusBundle.message("setting.dialog.autovalue"));
+        lombokRB.setText(GsonFormatPlusBundle.message("setting.dialog.lombok"));
+        otherRB.setText(GsonFormatPlusBundle.message("setting.dialog.other"));
+        annotationLabel.setText(GsonFormatPlusBundle.message("setting.dialog.annotation"));
+        okButton.setText(GsonFormatPlusBundle.message("common.ok"));
+        cancelButton.setText(GsonFormatPlusBundle.message("common.cancel"));
+    }
 
     private void onOK() {
 

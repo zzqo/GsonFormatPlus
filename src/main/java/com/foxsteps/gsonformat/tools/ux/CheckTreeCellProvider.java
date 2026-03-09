@@ -25,9 +25,12 @@ public class CheckTreeCellProvider extends ComponentProvider<JPanel> {
 
     public CheckTreeCellProvider(CheckTreeSelectionModel selectionModel) {
         this.selectionModel = selectionModel;
-        _checkBox = new TristateCheckBox(); //  创建一个TristateCheckBox实例
-        _checkBox.setOpaque(false); //  设置TristateCheckBox不绘制背景
-        _label = new JLabel();  //  创建一个JLabel实例
+        //  创建一个TristateCheckBox实例
+        _checkBox = new TristateCheckBox();
+        //  设置TristateCheckBox不绘制背景
+        _checkBox.setOpaque(false);
+        //  创建一个JLabel实例
+        _label = new JLabel();
     }
 
     @Override
@@ -52,7 +55,8 @@ public class CheckTreeCellProvider extends ComponentProvider<JPanel> {
             if (selectionModel.isPathSelected(path, true)) {
                 _checkBox.setState(Boolean.TRUE);
             } else if (selectionModel.isPartiallySelected(path)) {
-                _checkBox.setState(null);   //  注意“部分选中”状态的API
+                // 注意“部分选中”状态的API
+                _checkBox.setState(null);
             } else {
                 _checkBox.setState(Boolean.FALSE);
             }
