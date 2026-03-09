@@ -12,6 +12,7 @@ import com.foxsteps.gsonformat.tools.checktreetable.FiledTreeTableModel;
 import com.foxsteps.gsonformat.tools.ux.CheckTreeTableManager;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.ComboBox;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElementFactory;
 import com.intellij.psi.PsiFile;
@@ -97,6 +98,8 @@ public class FieldsDialog extends JFrame {
         });
         defaultMutableTreeTableNodeList = null;
         treetable.setRowHeight(30);
+        // 设置第 2 列（Data Type）为下拉选择框
+        setupDataTypeColumnEditor(treetable);
         sp.setViewportView(treetable);
         generateClass.setText(generateClassStr);
         buttonOK.addActionListener(new ActionListener() {
@@ -131,6 +134,46 @@ public class FieldsDialog extends JFrame {
                 onOK();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    }
+
+    /**
+     * 设置数据类型列的编辑器为下拉选择框
+     */
+    private void setupDataTypeColumnEditor(JXTreeTable treetable) {
+        // 数据类型选项
+        String[] dataTypeOptions = {
+                // 8 种基本数据类型
+                "boolean",
+                "byte",
+                "char",
+                "short",
+                "int",
+                "long",
+                "float",
+                "double",
+                // 对应的包装类
+                "Boolean",
+                "Byte",
+                "Character",
+                "Short",
+                "Integer",
+                "Long",
+                "Float",
+                "Double",
+                // 常用引用类型
+                "String",
+                "Object",
+                "Array",
+                "Map",
+                "List",
+                "Set"
+        };
+
+        ComboBox<String> comboBox = new ComboBox<>(dataTypeOptions);
+        DefaultCellEditor editor = new DefaultCellEditor(comboBox);
+
+        // 设置第 2 列（索引从 0 开始，所以是第 2 列）的编辑器
+        treetable.getColumnModel().getColumn(2).setCellEditor(editor);
     }
 
     private void onOK() {
