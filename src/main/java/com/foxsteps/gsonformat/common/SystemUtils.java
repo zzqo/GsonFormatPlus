@@ -15,7 +15,7 @@ public class SystemUtils {
 
     public static void copyToClipboard(String content) {
         Toolkit.getDefaultToolkit()
-                .getSystemClipboard()
-                .setContents(new StringSelection(content), null);
+               .getSystemClipboard()
+               .setContents(new StringSelection(content), null);
     }
 }

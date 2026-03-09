@@ -47,7 +47,7 @@ public class MainAction extends BaseGenerateAction {
         Editor editor = event.getData(PlatformDataKeys.EDITOR);
         PsiFile mFile = PsiUtilBase.getPsiFileInEditor(editor, project);
         PsiClass psiClass = getTargetClass(editor, mFile);
-        //初始化Json弹框
+        // 初始化Json弹框
         JsonDialog jsonD = new JsonDialog(psiClass, mFile, project);
         jsonD.setClass(psiClass);
         jsonD.setFile(mFile);

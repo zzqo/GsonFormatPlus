@@ -9,7 +9,12 @@ import com.foxsteps.gsonformat.config.Constant;
 import com.foxsteps.gsonformat.entity.ClassEntity;
 import com.foxsteps.gsonformat.entity.ConvertLibrary;
 import com.foxsteps.gsonformat.entity.FieldEntity;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiAnnotation;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiElementFactory;
+import com.intellij.psi.PsiField;
+import com.intellij.psi.PsiModifierList;
 import com.intellij.psi.codeStyle.JavaCodeStyleManager;
 import com.intellij.psi.javadoc.PsiDocComment;
 import org.apache.http.util.TextUtils;
@@ -80,7 +85,7 @@ public abstract class Processor {
     protected void onStarProcess(ClassEntity classEntity, PsiElementFactory factory, PsiClass cls, IProcessor visitor) {
         if (visitor != null) {
             visitor.onStarProcess(classEntity, factory, cls);
-            //使用Lombok生成Lombok注解
+            // 使用Lombok生成Lombok注解
             if (Config.getInstant().isUseLombok()) {
                 injectLombokAnnotation(factory, cls);
             }
@@ -106,7 +111,7 @@ public abstract class Processor {
     }
 
     protected void generateGetterAndSetter(PsiElementFactory factory, PsiClass cls, ClassEntity classEntity) {
-        //使用Lombok无需生成Getter与Setter
+        // 使用Lombok无需生成Getter与Setter
         if (Config.getInstant().isUseLombok()) {
             return;
         }
@@ -212,7 +217,7 @@ public abstract class Processor {
         if (classEntity.isGenerate()) {
             //// TODO: 16/11/9  待重构 
             if (Config.getInstant().isSplitGenerate()) {
-                //单独生成子类
+                // 单独生成子类
                 try {
                     generateClass = PsiClassUtil.getPsiClass(
                             parentClass.getContainingFile(), parentClass.getProject(), classEntity.getQualifiedName());
@@ -220,7 +225,7 @@ public abstract class Processor {
                     throwable.printStackTrace();
                 }
             } else {
-                //生成内部静态类
+                // 生成内部静态类
                 String classContent =
                         "public static class " + classEntity.getClassName() + "{}";
                 generateClass = factory.createClassFromText(classContent, null).getInnerClasses()[0];
@@ -273,7 +278,7 @@ public abstract class Processor {
     protected void onEndGenerateClass(PsiElementFactory factory, ClassEntity classEntity, PsiClass parentClass, PsiClass generateClass, IProcessor visitor) {
         if (visitor != null) {
             visitor.onEndGenerateClass(factory, classEntity, parentClass, generateClass);
-            //使用Lombok生成Lombok注解
+            // 使用Lombok生成Lombok注解
             if (Config.getInstant().isUseLombok()) {
                 PsiDocComment docComment = generateClass.getDocComment();
                 if (docComment == null && Config.getInstant().isUseComment()) {
@@ -299,7 +304,7 @@ public abstract class Processor {
 
                 @Override
                 public void runAgain() {
-                    //生成自定义名字
+                    // 生成自定义名字
                     fieldEntity.setFieldName(FieldHelper.generateLuckyFieldName(fieldEntity.getFieldName()));
                     cls.add(factory.createFieldFromText(generateFieldText(classEntity, fieldEntity, Constant.FIXME), cls));
                 }
@@ -332,12 +337,12 @@ public abstract class Processor {
         if (fieldEntity.getTargetClass() != null) {
             fieldEntity.getTargetClass().setGenerate(true);
         }
-        //添加字段序列化注解
+        // 添加字段序列化注解
         if (!isNumberKeyFieldAsMap(fieldEntity)
                 && (!filedName.equals(fieldEntity.getKey()) || Config.getInstant().isUseSerializedName())) {
             fieldSb.append(Config.getInstant().geFullNameAnnotation().replaceAll("\\{filed\\}", fieldEntity.getKey()));
         }
-        //添加字段类型与名称
+        // 添加字段类型与名称
         if (Config.getInstant().isFieldPrivateMode()) {
             fieldSb.append("private ").append(fieldEntity.getFullNameType()).append(" ").append(filedName).append(";");
         } else {
@@ -360,7 +365,7 @@ public abstract class Processor {
 
         PsiModifierList modifierList = generateClass.getModifierList();
         if (modifierList != null) {
-            //添加类注解
+            // 添加类注解
             PsiElement firstChild = modifierList.getFirstChild();
             PsiAnnotation[] annotations = modifierList.getAnnotations();
             Boolean isHasDataFlag = Boolean.FALSE;

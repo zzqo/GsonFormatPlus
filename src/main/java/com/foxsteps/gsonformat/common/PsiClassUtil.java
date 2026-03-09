@@ -3,9 +3,13 @@ package com.foxsteps.gsonformat.common;
 import com.intellij.ide.util.DirectoryUtil;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.*;
+import com.intellij.psi.JavaDirectoryService;
+import com.intellij.psi.JavaPsiFacade;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiDirectory;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiJavaFile;
 import com.intellij.psi.impl.source.PsiJavaFileImpl;
-import com.intellij.psi.search.EverythingGlobalScope;
 import com.intellij.psi.search.GlobalSearchScope;
 import org.apache.http.util.TextUtils;
 
@@ -24,7 +28,7 @@ public class PsiClassUtil {
         }
 
         File file = new File(psiDirectory.getVirtualFile().getCanonicalPath().concat("/")
-                .concat(generateClass.trim().replace(".", "/")).concat(".java"));
+                                         .concat(generateClass.trim().replace(".", "/")).concat(".java"));
 
         String[] strArray = generateClass.replace(" ", "").split("\\.");
         if (TextUtils.isEmpty(generateClass)) {
@@ -74,7 +78,7 @@ public class PsiClassUtil {
             return new File(psiDirectory.getVirtualFile().getCanonicalPath());
         }
         File file = new File(psiDirectory.getVirtualFile().getCanonicalPath().concat("/")
-                .concat(packageName.trim().replace(".", "/")));
+                                         .concat(packageName.trim().replace(".", "/")));
         if (file.exists()) {
             return file;
         }
@@ -92,7 +96,7 @@ public class PsiClassUtil {
         }
 
         File file = new File(psiDirectory.getVirtualFile().getCanonicalPath().concat("/")
-                .concat(generateClass.trim().replace(".", "/")).concat(".java"));
+                                         .concat(generateClass.trim().replace(".", "/")).concat(".java"));
 
         String[] strArray = generateClass.replace(" ", "").split("\\.");
         if (TextUtils.isEmpty(generateClass)) {
@@ -161,7 +165,7 @@ public class PsiClassUtil {
     }
 
     public static boolean isClassAvailableForProject(Project project, String className) {
-        
+
         PsiClass classInModule = JavaPsiFacade.getInstance(project).findClass(className, GlobalSearchScope.everythingScope(project));
         return classInModule != null;
     }

@@ -32,7 +32,7 @@ public class StringUtils {
     }
 
     public static boolean isAcronym(String word) {
-        for(int i = 0; i < word.length(); i++) {
+        for (int i = 0; i < word.length(); i++) {
             char c = word.charAt(i);
             if (Character.isLowerCase(c)) {
                 return false;
@@ -43,7 +43,7 @@ public class StringUtils {
 
     public static boolean isFirsrtUpper(String word) {
         char c = word.charAt(0);
-        if(Character.isUpperCase(c)){
+        if (Character.isUpperCase(c)) {
             return true;
         }
         return false;

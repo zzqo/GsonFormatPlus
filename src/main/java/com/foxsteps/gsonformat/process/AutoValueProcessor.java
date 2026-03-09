@@ -6,7 +6,12 @@ import com.foxsteps.gsonformat.config.Config;
 import com.foxsteps.gsonformat.config.Constant;
 import com.foxsteps.gsonformat.entity.ClassEntity;
 import com.foxsteps.gsonformat.entity.FieldEntity;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiAnnotation;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiElementFactory;
+import com.intellij.psi.PsiModifier;
+import com.intellij.psi.PsiModifierList;
 import org.apache.http.util.TextUtils;
 
 import java.util.regex.Pattern;

@@ -33,6 +33,6 @@ public class NotificationCenter {
             return;
         }
         Notification notification = new Notification("com.dim.plugin.Gsonformat", "Gsonformat ", espaceString(message), notificationType);
-        Notifications.Bus.notify(notification,project);
+        Notifications.Bus.notify(notification, project);
     }
 }

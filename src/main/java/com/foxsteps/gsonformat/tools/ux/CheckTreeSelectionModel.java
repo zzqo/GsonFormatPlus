@@ -6,7 +6,11 @@ package com.foxsteps.gsonformat.tools.ux;
 
 import org.jdesktop.swingx.treetable.DefaultMutableTreeTableNode;
 
-import javax.swing.tree.*;
+import javax.swing.tree.DefaultTreeSelectionModel;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;

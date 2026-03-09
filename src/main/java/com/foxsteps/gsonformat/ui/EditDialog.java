@@ -5,7 +5,11 @@ import com.foxsteps.gsonformat.config.Constant;
 import com.foxsteps.gsonformat.i18n.GsonFormatPlusBundle;
 
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class EditDialog extends JFrame {
 
@@ -88,7 +92,7 @@ public class EditDialog extends JFrame {
         cancelButton.setText(GsonFormatPlusBundle.message("common.cancel"));
         resetButton.setText(GsonFormatPlusBundle.message("common.reset"));
     }
-    
+
     private void resetAction() {
 
         switch (type) {

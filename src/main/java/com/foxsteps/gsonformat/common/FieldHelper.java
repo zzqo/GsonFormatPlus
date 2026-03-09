@@ -4,7 +4,12 @@ import com.foxsteps.gsonformat.config.Constant;
 import com.foxsteps.gsonformat.entity.FieldApiInfo;
 import com.foxsteps.gsonformat.enums.FieldApiTypeEnum;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -113,7 +118,7 @@ public class FieldHelper {
             }
 
             FieldApiInfo oldInfo = apiFieldMap.get(key);
-            if (oldInfo!=null && !StringUtils.isNotBlank(oldInfo.getFieldComment())) {
+            if (oldInfo != null && !StringUtils.isNotBlank(oldInfo.getFieldComment())) {
                 apiFieldMap.put(key, fieldApiInfo);
             }
 
@@ -224,7 +229,7 @@ public class FieldHelper {
     private static void addFirstField(List<FieldApiInfo> firstFieldList, String parentName, String[] fieldArr) {
         String fieldName = fieldArr[fieldIndexMap.get(FIELD_NAME)];
         String fieldComment = fieldArr[fieldIndexMap.get(FIELD_NAME_COMMENT)];
-        //System.out.println(fieldName);
+        // System.out.println(fieldName);
         String fieldDesc = "";
         String required = "";
         String fieldType = "";

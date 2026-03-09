@@ -2,11 +2,14 @@ package com.foxsteps.gsonformat.ui;
 
 import com.foxsteps.gsonformat.ConvertBridge;
 import com.foxsteps.gsonformat.common.JsonUtils;
+import com.foxsteps.gsonformat.common.PsiClassUtil;
 import com.foxsteps.gsonformat.common.StringUtils;
 import com.foxsteps.gsonformat.common.SystemUtils;
 import com.foxsteps.gsonformat.config.Config;
-import com.foxsteps.gsonformat.common.PsiClassUtil;
 import com.foxsteps.gsonformat.i18n.GsonFormatPlusBundle;
+import com.foxsteps.gsonformat.tools.json.JSONArray;
+import com.foxsteps.gsonformat.tools.json.JSONException;
+import com.foxsteps.gsonformat.tools.json.JSONObject;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
@@ -14,13 +17,19 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.impl.source.PsiJavaFileImpl;
 import org.apache.http.util.TextUtils;
-import com.foxsteps.gsonformat.tools.json.JSONArray;
-import com.foxsteps.gsonformat.tools.json.JSONException;
-import com.foxsteps.gsonformat.tools.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class JsonDialog extends JFrame implements ConvertBridge.Operator {
 
@@ -54,17 +63,17 @@ public class JsonDialog extends JFrame implements ConvertBridge.Operator {
         this.cls = cls;
         this.file = file;
         this.project = project;
-        //设置内容面板
+        // 设置内容面板
         setContentPane(contentPane2);
         setTitle(GsonFormatPlusBundle.message("plugin.name"));
         getRootPane().setDefaultButton(okButton);
         this.setAlwaysOnTop(true);
-        //初始化面板
+        // 初始化面板
         initGeneratePanel(file);
-        //初始化监听器
+        // 初始化监听器
         initListener();
     }
-    
+
     private void initLocalization() {
         formatBtn.setText(GsonFormatPlusBundle.message("json.dialog.format"));
         jsonLabel.setText(GsonFormatPlusBundle.message("json.dialog.json"));
@@ -80,11 +89,11 @@ public class JsonDialog extends JFrame implements ConvertBridge.Operator {
 
         cardLayout = (CardLayout) generateClassP.getLayout();
         generateClassTF.setBackground(errorLB.getBackground());
-        //获取当前Class
+        // 获取当前Class
         currentClass = ((PsiJavaFileImpl) file).getPackageName() + "." + file.getName().split("\\.")[0];
         generateClassLB.setText(currentClass);
         generateClassTF.setText(currentClass);
-        //生成类输入框焦点监听器
+        // 生成类输入框焦点监听器
         generateClassTF.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent focusEvent) {
@@ -101,7 +110,7 @@ public class JsonDialog extends JFrame implements ConvertBridge.Operator {
                 }
             }
         });
-        //生成类标签鼠标监听器
+        // 生成类标签鼠标监听器
         generateClassLB.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
@@ -131,7 +140,7 @@ public class JsonDialog extends JFrame implements ConvertBridge.Operator {
                 }
             }
         });
-        //格式化按钮监听器
+        // 格式化按钮监听器
         formatBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -161,7 +170,7 @@ public class JsonDialog extends JFrame implements ConvertBridge.Operator {
                         commentAR.setText(JsonUtils.getJsonComment(json, formatJson));
                     } catch (Exception exception) {
                         exception.printStackTrace();
-                        NotificationCenter.sendNotificationForProject(GsonFormatPlusBundle.message("json.dialog.json.format.error"), NotificationType.ERROR,project);
+                        NotificationCenter.sendNotificationForProject(GsonFormatPlusBundle.message("json.dialog.json.format.error"), NotificationType.ERROR, project);
                         return;
                     }
                 }
@@ -229,7 +238,7 @@ public class JsonDialog extends JFrame implements ConvertBridge.Operator {
                 if (!StringUtils.isNotBlank(json)) {
                     return;
                 }
-                String formatJson="";
+                String formatJson = "";
                 try {
                     if (json.startsWith("{")) {
                         JSONObject jsonObject = new JSONObject(json);
@@ -241,7 +250,7 @@ public class JsonDialog extends JFrame implements ConvertBridge.Operator {
                         editTP.setText(formatJson);
                     }
                     SystemUtils.copyToClipboard(formatJson);
-                    NotificationCenter.sendNotificationForProject(" Copy json success !",NotificationType.INFORMATION,project);
+                    NotificationCenter.sendNotificationForProject(" Copy json success !", NotificationType.INFORMATION, project);
                 } catch (JSONException jsonException) {
                     try {
                         String goodJson = JsonUtils.removeComment(json);
@@ -249,11 +258,11 @@ public class JsonDialog extends JFrame implements ConvertBridge.Operator {
                         editTP.setText(formatJson);
                         commentAR.setText(JsonUtils.getJsonComment(json, formatJson));
                         SystemUtils.copyToClipboard(formatJson);
-                        NotificationCenter.sendNotificationForProject(" Copy json success !",NotificationType.INFORMATION,project);
+                        NotificationCenter.sendNotificationForProject(" Copy json success !", NotificationType.INFORMATION, project);
                     } catch (Exception exception) {
-                        formatJson="";
+                        formatJson = "";
                         exception.printStackTrace();
-                        NotificationCenter.sendNotificationForProject("json格式不正确，格式需要标准的json或者json5",NotificationType.ERROR,project);
+                        NotificationCenter.sendNotificationForProject("json格式不正确，格式需要标准的json或者json5", NotificationType.ERROR, project);
                         return;
                     }
                 }
@@ -268,7 +277,7 @@ public class JsonDialog extends JFrame implements ConvertBridge.Operator {
                     return;
                 }
                 SystemUtils.copyToClipboard(jsonComment);
-                NotificationCenter.sendNotificationForProject(GsonFormatPlusBundle.message("json.dialog.copy.comment.success"),NotificationType.INFORMATION,project);
+                NotificationCenter.sendNotificationForProject(GsonFormatPlusBundle.message("json.dialog.copy.comment.success"), NotificationType.INFORMATION, project);
             }
         });
 
@@ -283,7 +292,7 @@ public class JsonDialog extends JFrame implements ConvertBridge.Operator {
             showError(ConvertBridge.Error.EMPTY_ERROR);
             return;
         }
-        //生成类名
+        // 生成类名
         String generateClassName = generateClassTF.getText().replaceAll(" ", "").replaceAll(".java$", "");
         if (TextUtils.isEmpty(generateClassName) || generateClassName.endsWith(".")) {
             Toast.make(project, generateClassP, MessageType.ERROR, GsonFormatPlusBundle.message("json.dialog.path.not.allowed"));
@@ -295,7 +304,7 @@ public class JsonDialog extends JFrame implements ConvertBridge.Operator {
         } else {
             generateClass = cls;
         }
-        //执行转换
+        // 执行转换
         new ConvertBridge(this, jsonSTR, jsonComment, file, project, generateClass, cls, generateClassName).run();
     }
 

@@ -29,7 +29,7 @@ public class ErrorDialog extends JFrame {
         editTP.setCaretPosition(0);
 
     }
-    
+
     private void initLocalization() {
         okButton.setText(GsonFormatPlusBundle.message("common.ok"));
     }

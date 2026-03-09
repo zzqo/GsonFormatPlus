@@ -2,7 +2,11 @@ package com.foxsteps.gsonformat.process;
 
 import com.foxsteps.gsonformat.config.Constant;
 import com.foxsteps.gsonformat.entity.ClassEntity;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiAnnotation;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiElementFactory;
+import com.intellij.psi.PsiModifierList;
 
 /**
  * Created by dim on 16/11/7.
@@ -17,13 +21,13 @@ class JacksonProcessor extends Processor {
     @Override
     public void onStarProcess(ClassEntity classEntity, PsiElementFactory factory, PsiClass cls, IProcessor visitor) {
         super.onStarProcess(classEntity, factory, cls, visitor);
-        //injectAnnotation(factory, cls);
+        // injectAnnotation(factory, cls);
     }
 
     @Override
     protected void onEndGenerateClass(PsiElementFactory factory, ClassEntity classEntity, PsiClass parentClass, PsiClass generateClass, IProcessor visitor) {
         super.onEndGenerateClass(factory, classEntity, parentClass, generateClass, visitor);
-        //injectAnnotation(factory, generateClass);
+        // injectAnnotation(factory, generateClass);
     }
 
     /**
@@ -50,7 +54,7 @@ class JacksonProcessor extends Processor {
         if (!isHasJsonIgnoreFlag) {
             PsiAnnotation annotationFromText =
                     factory.createAnnotationFromText("@com.fasterxml.jackson.annotation.JsonIgnoreProperties(ignoreUnknown = true)", generateClass);
-            //添加类注解
+            // 添加类注解
             modifierList.addBefore(annotationFromText, firstChild);
         }
     }

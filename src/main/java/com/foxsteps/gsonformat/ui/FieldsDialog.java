@@ -1,14 +1,15 @@
 package com.foxsteps.gsonformat.ui;
 
-import com.foxsteps.gsonformat.i18n.GsonFormatPlusBundle;
-import com.foxsteps.gsonformat.tools.checktreetable.FiledTreeTableModel;
 import com.foxsteps.gsonformat.ConvertBridge;
 import com.foxsteps.gsonformat.action.DataWriter;
+import com.foxsteps.gsonformat.common.PsiClassUtil;
 import com.foxsteps.gsonformat.common.StringUtils;
 import com.foxsteps.gsonformat.config.Config;
 import com.foxsteps.gsonformat.entity.ClassEntity;
 import com.foxsteps.gsonformat.entity.FieldEntity;
-import com.foxsteps.gsonformat.common.PsiClassUtil;
+import com.foxsteps.gsonformat.i18n.GsonFormatPlusBundle;
+import com.foxsteps.gsonformat.tools.checktreetable.FiledTreeTableModel;
+import com.foxsteps.gsonformat.tools.ux.CheckTreeTableManager;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiClass;
@@ -16,12 +17,15 @@ import com.intellij.psi.PsiElementFactory;
 import com.intellij.psi.PsiFile;
 import org.jdesktop.swingx.JXTreeTable;
 import org.jdesktop.swingx.treetable.DefaultMutableTreeTableNode;
-import com.foxsteps.gsonformat.tools.ux.CheckTreeTableManager;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -65,7 +69,7 @@ public class FieldsDialog extends JFrame {
         this.setAlwaysOnTop(true);
         initListener(classEntity, generateClassStr);
     }
-    
+
     private void initLocalization() {
         buttonOK.setText(GsonFormatPlusBundle.message("common.ok"));
         buttonCancel.setText(GsonFormatPlusBundle.message("common.cancel"));

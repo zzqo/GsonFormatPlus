@@ -16,7 +16,7 @@ public class Utils {
             String key = filedList.get(i);
             sb.append("* ").append(key).append(" : ");
             sb.append(json.get(key).toString().replaceAll("\r", "")
-                    .replaceAll("\t ", "").replaceAll("\f", ""));
+                          .replaceAll("\t ", "").replaceAll("\f", ""));
             sb.append("\n");
         }
         sb.append("*/ \n");

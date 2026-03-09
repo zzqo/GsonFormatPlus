@@ -27,10 +27,10 @@ public class Toast {
         StatusBar statusBar = WindowManager.getInstance().getStatusBar(project);
 
         JBPopupFactory.getInstance()
-                .createHtmlTextBalloonBuilder(text, type, null)
-                .setFadeoutTime(7500)
-                .createBalloon()
-                .show(RelativePoint.getCenterOf(jComponent), Balloon.Position.above);
+                      .createHtmlTextBalloonBuilder(text, type, null)
+                      .setFadeoutTime(7500)
+                      .createBalloon()
+                      .show(RelativePoint.getCenterOf(jComponent), Balloon.Position.above);
     }
 
     /**
@@ -45,9 +45,9 @@ public class Toast {
         StatusBar statusBar = WindowManager.getInstance().getStatusBar(project);
 
         JBPopupFactory.getInstance()
-                .createHtmlTextBalloonBuilder(text, type, null)
-                .setFadeoutTime(7500)
-                .createBalloon()
-                .show(RelativePoint.getCenterOf(statusBar.getComponent()), Balloon.Position.atRight);
+                      .createHtmlTextBalloonBuilder(text, type, null)
+                      .setFadeoutTime(7500)
+                      .createBalloon()
+                      .show(RelativePoint.getCenterOf(statusBar.getComponent()), Balloon.Position.atRight);
     }
 }

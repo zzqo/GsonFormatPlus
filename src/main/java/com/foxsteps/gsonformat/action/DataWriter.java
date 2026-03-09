@@ -65,7 +65,7 @@ public class DataWriter extends WriteCommandAction.Simple {
             }
         });
     }
-    
+
     @Override
     @Deprecated()
     public RunResult execute() {

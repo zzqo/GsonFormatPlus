@@ -9,7 +9,11 @@ import com.intellij.psi.codeStyle.VariableKind;
 import org.apache.http.util.TextUtils;
 
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class SettingDialog extends JFrame {
 
@@ -31,7 +35,7 @@ public class SettingDialog extends JFrame {
     private JCheckBox filedPrefixCB;
     private JTextField annotationTF;
     private JCheckBox virgoModelCB;
-    //private JCheckBox generateCommentsCB;
+    // private JCheckBox generateCommentsCB;
     private JCheckBox useWrapperClassCB;
     private JCheckBox useCommentCB;
     private JCheckBox splitGenerateCB;
@@ -64,7 +68,7 @@ public class SettingDialog extends JFrame {
     private JLabel annotationLabel;
 
 
-    //注解字符串
+    // 注解字符串
     private String annotaionStr;
 
     public SettingDialog(Project project) {
@@ -90,55 +94,55 @@ public class SettingDialog extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                //窗体关闭
+                // 窗体关闭
                 onCancel();
             }
         });
-        //内容面板
+        // 内容面板
         contentPane.registerKeyboardAction(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //ESC键关闭
+                // ESC键关闭
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        //字段私有模型
+        // 字段私有模型
         if (Config.getInstant().isFieldPrivateMode()) {
             fieldPrivateRadioButton.setSelected(true);
         } else {
             fieldPublicRadioButton.setSelected(true);
         }
-        //处女模式CheckBox
+        // 处女模式CheckBox
         virgoModelCB.setSelected(Config.getInstant().isVirgoMode());
-        //生成注释
-        //generateCommentsCB.setSelected(Config.getInstant().isGenerateComments());
-        //字段前缀checkbox
+        // 生成注释
+        // generateCommentsCB.setSelected(Config.getInstant().isGenerateComments());
+        // 字段前缀checkbox
         filedPrefixCB.setSelected(Config.getInstant().isUseFieldNamePrefix());
         filedPrefixTF.setEnabled(Config.getInstant().isUseFieldNamePrefix());
-        //序列化名checkbox
+        // 序列化名checkbox
         useSerializedNameCB.setSelected(Config.getInstant().isUseSerializedName());
-        //转换数据CheckBox
+        // 转换数据CheckBox
         objectFromDataCB.setSelected(Config.getInstant().isObjectFromData());
         objectFromData1CB.setSelected(Config.getInstant().isObjectFromData1());
         arrayFromDataCB.setSelected(Config.getInstant().isArrayFromData());
         arrayFromData1CB.setSelected(Config.getInstant().isArrayFromData1());
-        //重用实体CheckBox
+        // 重用实体CheckBox
         reuseEntityCB.setSelected(Config.getInstant().isReuseEntity());
         objectButton.setEnabled(objectFromDataCB.isSelected());
         object1Button.setEnabled(objectFromData1CB.isSelected());
         arrayButton.setEnabled(arrayFromDataCB.isSelected());
         array1Button.setEnabled(arrayFromData1CB.isSelected());
-        //实体后缀
+        // 实体后缀
         suffixEdit.setText(Config.getInstant().getSuffixStr());
-        //分割生成模式
+        // 分割生成模式
         splitGenerateCB.setSelected(Config.getInstant().isSplitGenerate());
-        //使用包装类checkbox
+        // 使用包装类checkbox
         useWrapperClassCB.setSelected(Config.getInstant().isUseWrapperClass());
-        //增加字段注释checkBox
+        // 增加字段注释checkBox
         useCommentCB.setSelected(Config.getInstant().isUseComment());
-        //使用LombokCheckbox
+        // 使用LombokCheckbox
         useLombokCB.setSelected(Config.getInstant().isUseLombok());
-        //使用数字key作为key
+        // 使用数字key作为key
         useNumberKeyAsMapCB.setSelected(Config.getInstant().isUseNumberKeyAsMap());
 
         /**
@@ -170,7 +174,7 @@ public class SettingDialog extends JFrame {
                 array1Button.setEnabled(arrayFromData1CB.isSelected());
             }
         });
-        //字段前缀checkbox
+        // 字段前缀checkbox
         filedPrefixCB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -185,7 +189,7 @@ public class SettingDialog extends JFrame {
         }
         filedPrefixTF.setText(filedPrefix);
 
-        //Convert Library
+        // Convert Library
         gsonRB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -375,7 +379,7 @@ public class SettingDialog extends JFrame {
         });
     }
 
-    private void initLocalization(){
+    private void initLocalization() {
         convertMethodLabel.setText(GsonFormatPlusBundle.message("setting.dialog.convert.method"));
         objectFromDataCB.setText(GsonFormatPlusBundle.message("setting.dialog.object.from.data"));
         objectFromData1CB.setText(GsonFormatPlusBundle.message("setting.dialog.object.from.data1"));
@@ -426,7 +430,7 @@ public class SettingDialog extends JFrame {
         Config.getInstant().setReuseEntity(reuseEntityCB.isSelected());
         Config.getInstant().setSuffixStr(suffixEdit.getText());
         Config.getInstant().setVirgoMode(virgoModelCB.isSelected());
-        //Config.getInstant().setGenerateComments(generateCommentsCB.isSelected());
+        // Config.getInstant().setGenerateComments(generateCommentsCB.isSelected());
         Config.getInstant().setFiledNamePreFixStr(filedPrefixTF.getText());
         Config.getInstant().setAnnotationStr(annotationTF.getText());
         Config.getInstant().setUseFieldNamePrefix(filedPrefixCB.isSelected());

@@ -1,18 +1,32 @@
 package com.foxsteps.gsonformat;
 
 import com.foxsteps.gsonformat.action.DataWriter;
-import com.foxsteps.gsonformat.common.*;
+import com.foxsteps.gsonformat.common.CheckUtil;
+import com.foxsteps.gsonformat.common.FieldHelper;
+import com.foxsteps.gsonformat.common.PsiClassUtil;
+import com.foxsteps.gsonformat.common.StringUtils;
+import com.foxsteps.gsonformat.common.Utils;
 import com.foxsteps.gsonformat.config.Config;
-import com.foxsteps.gsonformat.entity.*;
-import com.foxsteps.gsonformat.i18n.GsonFormatPlusBundle;
+import com.foxsteps.gsonformat.entity.ClassEntity;
+import com.foxsteps.gsonformat.entity.DataType;
+import com.foxsteps.gsonformat.entity.FieldApiInfo;
+import com.foxsteps.gsonformat.entity.FieldArrayEntity;
+import com.foxsteps.gsonformat.entity.FieldEntity;
+import com.foxsteps.gsonformat.entity.IterableFieldEntity;
 import com.foxsteps.gsonformat.tools.json.JSONArray;
 import com.foxsteps.gsonformat.tools.json.JSONObject;
 import com.foxsteps.gsonformat.ui.FieldsDialog;
-import com.foxsteps.gsonformat.ui.Toast;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.MessageType;
-import com.intellij.psi.*;
+import com.intellij.psi.JavaPsiFacade;
+import com.intellij.psi.PsiArrayType;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiElementFactory;
+import com.intellij.psi.PsiField;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiPrimitiveType;
+import com.intellij.psi.PsiType;
+import com.intellij.psi.PsiWildcardType;
 import com.intellij.psi.impl.source.PsiClassReferenceType;
 import com.intellij.psi.util.PsiTypesUtil;
 import org.apache.http.util.TextUtils;
@@ -21,7 +35,13 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -95,10 +115,10 @@ public class ConvertBridge {
         fullFilterRegex = new StringBuilder();
         briefFilterRegex = new StringBuilder();
 
-        //清理已声明的数据
+        // 清理已声明的数据
         CheckUtil.getInstant().cleanDeclareData();
 
-        //获取配置注解字符串
+        // 获取配置注解字符串
         String[] arg = Config.getInstant().getAnnotationStr().replace("{filed}", "(\\w+)").split("\\.");
 
         for (int i = 0; i < arg.length; i++) {
@@ -120,10 +140,10 @@ public class ConvertBridge {
 
     public void run() {
         JSONObject json = null;
-        //清理错误信息
+        // 清理错误信息
         operator.cleanErrorInfo();
         try {
-            //转换为JSONObject
+            // 转换为JSONObject
             json = parseJSONObject(jsonStr);
         } catch (Exception e) {
             String jsonTS = removeComment(jsonStr);
@@ -136,16 +156,16 @@ public class ConvertBridge {
         }
         if (json != null) {
             try {
-                //获取目标类
+                // 获取目标类
                 ClassEntity classEntity = collectClassAttribute(targetClass, Config.getInstant().isReuseEntity());
                 if (classEntity != null) {
-                    //添加已声明的字段
+                    // 添加已声明的字段
                     for (FieldEntity item : classEntity.getFields()) {
                         declareFields.put(item.getKey(), item);
                         CheckUtil.getInstant().addDeclareFieldName(item.getKey());
                     }
                 }
-                //单独生成子类
+                // 单独生成子类
                 if (Config.getInstant().isSplitGenerate()) {
                     collectPackAllClassName();
                 }
@@ -290,7 +310,7 @@ public class ConvertBridge {
      */
     public String removeComment(String str) {
         if (TextUtils.isEmpty(str)) {
-            return ""; 
+            return "";
         }
 
         String temp = str.replaceAll("/\\*" +
@@ -557,21 +577,21 @@ public class ConvertBridge {
     private List<FieldEntity> createFields(JSONObject json, Map<String, FieldApiInfo> fieldApiInfoMap, List<String> fieldList, ClassEntity parentClass) {
         List<FieldEntity> fieldEntityList = new ArrayList<FieldEntity>();
         List<FieldArrayEntity> listEntityList = new ArrayList<FieldArrayEntity>();
-        //是否添加注释
-        //boolean writeExtra = Config.getInstant().isGenerateComments();
-        //去掉构造函数注释
-        boolean writeExtra=false;
+        // 是否添加注释
+        // boolean writeExtra = Config.getInstant().isGenerateComments();
+        // 去掉构造函数注释
+        boolean writeExtra = false;
         for (int i = 0; i < fieldList.size(); i++) {
             String key = fieldList.get(i);
             Object value = json.get(key);
             if (value instanceof JSONArray) {
-                FieldArrayEntity arrayEntity=new FieldArrayEntity();
+                FieldArrayEntity arrayEntity = new FieldArrayEntity();
                 arrayEntity.setSortNo(i);
                 arrayEntity.setKey(key);
                 listEntityList.add(arrayEntity);
                 continue;
             }
-            //创建字段实体
+            // 创建字段实体
             FieldEntity fieldEntity = createField(parentClass, key, value, fieldApiInfoMap);
             fieldEntity.setSortNo(i);
             fieldEntityList.add(fieldEntity);
@@ -581,29 +601,29 @@ public class ConvertBridge {
             }
         }
 
-        //集合类型
+        // 集合类型
         for (int i = 0; i < listEntityList.size(); i++) {
             FieldArrayEntity entity = listEntityList.get(i);
             Object type = json.get(entity.getKey());
             FieldEntity fieldEntity = createField(parentClass, entity.getKey(), type, fieldApiInfoMap);
-            String className=null;
+            String className = null;
             if (StringUtils.isNotBlank(parentClass.getQualifiedName())) {
-                className=parentClass.getClassName();
+                className = parentClass.getClassName();
             }
-            String fieldComment = FieldHelper.getFieldComment(fieldApiInfoMap, entity.getKey(),className);
+            String fieldComment = FieldHelper.getFieldComment(fieldApiInfoMap, entity.getKey(), className);
             fieldEntity.setFieldComment(fieldComment);
             fieldEntity.setSortNo(entity.getSortNo());
             fieldEntityList.add(fieldEntity);
         }
         List<FieldEntity> resultList = fieldEntityList.stream()
-                .sorted(Comparator.comparing(FieldEntity::getSortNo))
-                .collect(Collectors.toList());
+                                                      .sorted(Comparator.comparing(FieldEntity::getSortNo))
+                                                      .collect(Collectors.toList());
         return resultList;
     }
 
 
     private FieldEntity createField(ClassEntity parentClass, String key, Object type, Map<String, FieldApiInfo> fieldApiInfoMap) {
-        //过滤 不符合规则的key
+        // 过滤 不符合规则的key
         String fieldName = CheckUtil.getInstant().handleArg(key);
         if (Config.getInstant().isUseSerializedName() && fieldName.contains("_")) {
             if (fieldName.endsWith("_")) {
@@ -611,16 +631,16 @@ public class ConvertBridge {
             }
             fieldName = StringUtils.captureStringLeaveUnderscore(fieldName.toLowerCase());
         } else {
-            //fieldName是全部大写
+            // fieldName是全部大写
             if (Config.getInstant().isUseSerializedName() && StringUtils.isAcronym(fieldName)) {
                 fieldName = fieldName.toLowerCase();
             }
-            //首字母是大写，存在其他字母是小写
+            // 首字母是大写，存在其他字母是小写
             if (StringUtils.isFirsrtUpper(fieldName)) {
                 if (fieldName.length() == 1) {
                     fieldName = fieldName.toLowerCase();
-                }else{
-                    fieldName = fieldName.substring(0,1).toLowerCase()+ fieldName.substring(1);
+                } else {
+                    fieldName = fieldName.substring(0, 1).toLowerCase() + fieldName.substring(1);
                 }
             }
 
@@ -652,9 +672,9 @@ public class ConvertBridge {
     private FieldEntity typeByValue(ClassEntity parentClass, String key, Object type, Map<String, FieldApiInfo> fieldApiInfoMap) {
         FieldEntity result;
         if (type instanceof JSONObject) {
-            //对象类型
+            // 对象类型
             ClassEntity classEntity = existDeclareClass((JSONObject) type);
-            //内部类
+            // 内部类
             if (classEntity == null) {
                 FieldEntity fieldEntity = new FieldEntity();
                 ClassEntity innerClassEntity = createInnerClass(createSubClassName(key, type), (JSONObject) type, parentClass, fieldApiInfoMap);
@@ -675,7 +695,7 @@ public class ConvertBridge {
             String fieldComment = FieldHelper.getFieldComment(fieldApiInfoMap, key, null);
             result.setFieldComment(fieldComment);
         } else if (type instanceof JSONArray) {
-            //集合类型
+            // 集合类型
             result = handleJSONArray(parentClass, (JSONArray) type, key, 1, fieldApiInfoMap);
             String fieldComment = FieldHelper.getFieldComment(fieldApiInfoMap, key, null);
             result.setFieldComment(fieldComment);
@@ -738,11 +758,11 @@ public class ConvertBridge {
      */
     private ClassEntity createInnerClass(String className, JSONObject json, ClassEntity parentClass, Map<String, FieldApiInfo> fieldApiInfoMap) {
 
-        //拆分生成子类
+        // 拆分生成子类
         if (Config.getInstant().isSplitGenerate()) {
             String qualifiedName = packageName == null ? className : packageName + "." + className;
             if (CheckUtil.getInstant().containsDeclareClassName(qualifiedName)) {
-                //存在同名。
+                // 存在同名。
                 PsiClass psiClass = PsiClassUtil.exist(file, qualifiedName);
                 if (psiClass != null) {
                     ClassEntity classEntity = collectClassAttribute(psiClass, false);
@@ -757,7 +777,7 @@ public class ConvertBridge {
             }
         }
 
-        //生成内部类
+        // 生成内部类
         ClassEntity subClassEntity = new ClassEntity();
         if (Config.getInstant().isSplitGenerate()) {
             subClassEntity.setPackName(packageName);
