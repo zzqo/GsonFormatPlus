@@ -137,6 +137,10 @@ public class JsonDialog extends JFrame implements ConvertBridge.Operator {
             public void actionPerformed(ActionEvent e) {
                 String json = editTP.getText();
                 json = json.trim();
+                if (TextUtils.isEmpty(json)) {
+                    showError(ConvertBridge.Error.EMPTY_ERROR);
+                    return;
+                }
                 try {
                     if (json.startsWith("{")) {
                         JSONObject jsonObject = new JSONObject(json);
@@ -146,6 +150,8 @@ public class JsonDialog extends JFrame implements ConvertBridge.Operator {
                         JSONArray jsonArray = new JSONArray(json);
                         String formatJson = jsonArray.toString(4);
                         editTP.setText(formatJson);
+                    } else {
+                        showError(ConvertBridge.Error.FORMAT_ERROR);
                     }
                 } catch (JSONException jsonException) {
                     try {
@@ -155,7 +161,7 @@ public class JsonDialog extends JFrame implements ConvertBridge.Operator {
                         commentAR.setText(JsonUtils.getJsonComment(json, formatJson));
                     } catch (Exception exception) {
                         exception.printStackTrace();
-                        NotificationCenter.sendNotificationForProject("json格式不正确，格式需要标准的json或者json5",NotificationType.ERROR,project);
+                        NotificationCenter.sendNotificationForProject(GsonFormatPlusBundle.message("json.dialog.json.format.error"), NotificationType.ERROR,project);
                         return;
                     }
                 }
@@ -274,6 +280,7 @@ public class JsonDialog extends JFrame implements ConvertBridge.Operator {
         String jsonSTR = editTP.getText().trim();
         String jsonComment = commentAR.getText().trim();
         if (TextUtils.isEmpty(jsonSTR)) {
+            showError(ConvertBridge.Error.EMPTY_ERROR);
             return;
         }
         //生成类名
@@ -289,8 +296,7 @@ public class JsonDialog extends JFrame implements ConvertBridge.Operator {
             generateClass = cls;
         }
         //执行转换
-        new ConvertBridge(this, jsonSTR, jsonComment, file, project, generateClass,
-                cls, generateClassName).run();
+        new ConvertBridge(this, jsonSTR, jsonComment, file, project, generateClass, cls, generateClassName).run();
     }
 
     private void onCancel() {
@@ -342,6 +348,9 @@ public class JsonDialog extends JFrame implements ConvertBridge.Operator {
     @Override
     public void showError(ConvertBridge.Error err) {
         switch (err) {
+            case EMPTY_ERROR:
+                Toast.make(project, generateClassP, MessageType.ERROR, GsonFormatPlusBundle.message("json.dialog.empty.json"));
+                break;
             case DATA_ERROR:
                 errorLB.setText(GsonFormatPlusBundle.message("json.dialog.data.error"));
                 if (Config.getInstant().isToastError()) {
@@ -356,6 +365,9 @@ public class JsonDialog extends JFrame implements ConvertBridge.Operator {
                 break;
             case PATH_ERROR:
                 Toast.make(project, generateClassP, MessageType.ERROR, GsonFormatPlusBundle.message("json.dialog.path.not.allowed"));
+                break;
+            case FORMAT_ERROR:
+                Toast.make(project, generateClassP, MessageType.ERROR, GsonFormatPlusBundle.message("json.dialog.json.format.error"));
                 break;
             default:
                 break;

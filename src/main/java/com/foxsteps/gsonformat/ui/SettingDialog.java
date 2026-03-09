@@ -49,6 +49,7 @@ public class SettingDialog extends JFrame {
     private JRadioButton gsonRB;
     private JRadioButton jacksonRB;
     private JRadioButton fastJsonRB;
+    private JRadioButton fast2JsonRB;
     private JRadioButton otherRB;
     private JRadioButton loganSquareRB;
     private JRadioButton autoValueRB;
@@ -403,6 +404,7 @@ public class SettingDialog extends JFrame {
         convertLibraryLabel.setText(GsonFormatPlusBundle.message("setting.dialog.convert.library"));
         jacksonRB.setText(GsonFormatPlusBundle.message("setting.dialog.jackson"));
         fastJsonRB.setText(GsonFormatPlusBundle.message("setting.dialog.fastjson"));
+        fast2JsonRB.setText(GsonFormatPlusBundle.message("setting.dialog.fast2json"));
         gsonRB.setText(GsonFormatPlusBundle.message("setting.dialog.gson"));
         loganSquareRB.setText(GsonFormatPlusBundle.message("setting.dialog.logansquare"));
         autoValueRB.setText(GsonFormatPlusBundle.message("setting.dialog.autovalue"));

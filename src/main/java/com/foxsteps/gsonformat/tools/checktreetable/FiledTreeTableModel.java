@@ -4,6 +4,7 @@
  */
 package com.foxsteps.gsonformat.tools.checktreetable;
 
+import com.foxsteps.gsonformat.i18n.GsonFormatPlusBundle;
 import com.foxsteps.gsonformat.tools.ux.CellProvider;
 import org.jdesktop.swingx.treetable.DefaultMutableTreeTableNode;
 import org.jdesktop.swingx.treetable.DefaultTreeTableModel;
@@ -14,12 +15,19 @@ import org.jdesktop.swingx.treetable.TreeTableNode;
  */
 public class FiledTreeTableModel extends DefaultTreeTableModel {
 
-    private String[] _names = {" Key ", "Value", "Data Type", " Field name ", " Field Comment "};
+    private String[] _names;
     private Class[] _types = {Object.class, Object.class, Object.class, Object.class, Object.class};
 
 
     public FiledTreeTableModel(TreeTableNode node) {
         super(node);
+        this._names = new String[]{
+                GsonFormatPlusBundle.message("filed.tree.table.column.key"),
+                GsonFormatPlusBundle.message("filed.tree.table.column.value"),
+                GsonFormatPlusBundle.message("filed.tree.table.column.data.type"),
+                GsonFormatPlusBundle.message("filed.tree.table.column.field.name"),
+                GsonFormatPlusBundle.message("filed.tree.table.column.field.comment")
+        };
     }
 
     /**

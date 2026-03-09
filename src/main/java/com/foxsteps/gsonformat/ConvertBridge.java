@@ -4,11 +4,14 @@ import com.foxsteps.gsonformat.action.DataWriter;
 import com.foxsteps.gsonformat.common.*;
 import com.foxsteps.gsonformat.config.Config;
 import com.foxsteps.gsonformat.entity.*;
+import com.foxsteps.gsonformat.i18n.GsonFormatPlusBundle;
 import com.foxsteps.gsonformat.tools.json.JSONArray;
 import com.foxsteps.gsonformat.tools.json.JSONObject;
 import com.foxsteps.gsonformat.ui.FieldsDialog;
+import com.foxsteps.gsonformat.ui.Toast;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.MessageType;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.PsiClassReferenceType;
 import com.intellij.psi.util.PsiTypesUtil;
@@ -153,6 +156,7 @@ public class ConvertBridge {
                 operator.setVisible(true);
             }
         }
+        operator.showError(Error.FORMAT_ERROR);
         declareFields = null;
         declareClass = null;
     }
@@ -892,9 +896,11 @@ public class ConvertBridge {
         /**
          * 错误枚举
          */
+        EMPTY_ERROR,
         DATA_ERROR,
         PARSE_ERROR,
-        PATH_ERROR;
+        PATH_ERROR,
+        FORMAT_ERROR
     }
 }
 

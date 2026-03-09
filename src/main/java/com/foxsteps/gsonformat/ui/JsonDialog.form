@@ -103,9 +103,12 @@
                 <constraints/>
                 <properties>
                   <enabled value="true"/>
+                  <editable value="true"/>
                   <margin top="1" left="1" bottom="1" right="1"/>
                   <rows value="0"/>
                   <text value=""/>
+                  <lineWrap value="true"/>
+                  <wrapStyleWord value="true"/>
                 </properties>
               </component>
             </children>

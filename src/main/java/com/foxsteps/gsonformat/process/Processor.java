@@ -28,18 +28,23 @@ public abstract class Processor {
 
     protected String mainPackage;
 
-    static {
-        sProcessorMap.put(ConvertLibrary.Gson, new GsonProcessor());
-        sProcessorMap.put(ConvertLibrary.Jackson, new JacksonProcessor());
-        sProcessorMap.put(ConvertLibrary.FastJson, new FastJsonProcessor());
-        sProcessorMap.put(ConvertLibrary.AutoValue, new AutoValueProcessor());
-        sProcessorMap.put(ConvertLibrary.LoganSquare, new LoganSquareProcessor());
-        sProcessorMap.put(ConvertLibrary.Other, new OtherProcessor());
-        sProcessorMap.put(ConvertLibrary.Lombok, new LombokProcessor());
-    }
-
     static Processor getProcessor(ConvertLibrary convertLibrary) {
-        return sProcessorMap.get(convertLibrary);
+        Processor processor = sProcessorMap.get(convertLibrary);
+        if (processor == null) {
+            // 延迟初始化
+            processor = switch (convertLibrary) {
+                case Gson -> new GsonProcessor();
+                case Jackson -> new JacksonProcessor();
+                case FastJson -> new FastJsonProcessor();
+                case FastJson2 -> new Fast2JsonProcessor();
+                case AutoValue -> new AutoValueProcessor();
+                case LoganSquare -> new LoganSquareProcessor();
+                case Other -> new OtherProcessor();
+                case Lombok -> new LombokProcessor();
+            };
+            sProcessorMap.put(convertLibrary, processor);
+        }
+        return processor;
     }
 
     public void process(ClassEntity classEntity, PsiElementFactory factory, PsiClass cls, IProcessor visitor) {
